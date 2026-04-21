@@ -1,0 +1,8 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/ComputerUseAgent.Api/ComputerUseAgent.Api.csproj" />
+    <Project Path="src/ComputerUseAgent.Core/ComputerUseAgent.Core.csproj" />
+    <Project Path="src/ComputerUseAgent.Infrastructure/ComputerUseAgent.Infrastructure.csproj" />
+    <Project Path="src/ComputerUseAgent.Web/ComputerUseAgent.Web.csproj" />
+  </Folder>
+</Solution>

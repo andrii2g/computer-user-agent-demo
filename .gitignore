@@ -1,0 +1,11 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/src/ComputerUseAgent.Api/obj
+/.vs/ComputerUseAgent.Demo.slnx
+/src/ComputerUseAgent.Core/obj
+/src/ComputerUseAgent.Api/ComputerUseAgent.Api.csproj.user
+/src/ComputerUseAgent.Infrastructure/obj
+/src/ComputerUseAgent.Tests/obj
+/src/ComputerUseAgent.Web/obj
