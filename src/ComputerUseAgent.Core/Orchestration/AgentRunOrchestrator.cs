@@ -69,7 +69,7 @@ public sealed class AgentRunOrchestrator
         string? previousResponseId = null;
         var pendingToolOutputs = new List<ToolCallOutput>();
         var totalToolCalls = 0;
-        var shellCommands = 0;
+        var counters = new ExecutionCounters();
 
         try
         {
@@ -148,7 +148,7 @@ public sealed class AgentRunOrchestrator
                     var toolResult = await ExecuteToolCallAsync(
                         session,
                         toolCall,
-                        ref shellCommands,
+                        counters,
                         cancellationToken);
 
                     await AppendEventAsync(
@@ -204,7 +204,7 @@ public sealed class AgentRunOrchestrator
     private async Task<ToolExecutionResult> ExecuteToolCallAsync(
         AgentSession session,
         ModelRequestedToolCall toolCall,
-        ref int shellCommands,
+        ExecutionCounters counters,
         CancellationToken cancellationToken)
     {
         try
@@ -214,7 +214,7 @@ public sealed class AgentRunOrchestrator
                 ToolNames.ListFiles => await HandleListFilesAsync(session, toolCall.ArgumentsJson, cancellationToken),
                 ToolNames.ReadFile => await HandleReadFileAsync(session, toolCall.ArgumentsJson, cancellationToken),
                 ToolNames.WriteFile => await HandleWriteFileAsync(session, toolCall.ArgumentsJson, cancellationToken),
-                ToolNames.RunShellCommand => await HandleRunShellCommandAsync(session, toolCall.ArgumentsJson, ref shellCommands, cancellationToken),
+                ToolNames.RunShellCommand => await HandleRunShellCommandAsync(session, toolCall.ArgumentsJson, counters, cancellationToken),
                 ToolNames.FinishTask => await HandleFinishTaskAsync(session, toolCall.ArgumentsJson, cancellationToken),
                 _ => CreateToolError(toolCall.Name, "unsupported_tool", $"Unsupported tool '{toolCall.Name}'.", false)
             };
@@ -265,10 +265,10 @@ public sealed class AgentRunOrchestrator
     private async Task<ToolExecutionResult> HandleRunShellCommandAsync(
         AgentSession session,
         string argumentsJson,
-        ref int shellCommands,
+        ExecutionCounters counters,
         CancellationToken cancellationToken)
     {
-        if (++shellCommands > _sandboxOptions.MaxShellCommands)
+        if (++counters.ShellCommands > _sandboxOptions.MaxShellCommands)
         {
             return CreateToolError(ToolNames.RunShellCommand, "shell_limit_exceeded", "Maximum shell command limit exceeded.", false);
         }
@@ -325,6 +325,11 @@ public sealed class AgentRunOrchestrator
 
         await RefreshFilesAsync(session, cancellationToken);
         return CreateToolSuccess(ToolNames.RunShellCommand, response);
+    }
+
+    private sealed class ExecutionCounters
+    {
+        public int ShellCommands { get; set; }
     }
 
     private async Task<ToolExecutionResult> HandleFinishTaskAsync(AgentSession session, string argumentsJson, CancellationToken cancellationToken)
