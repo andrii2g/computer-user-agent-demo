@@ -39,10 +39,3 @@ See `examples/prompts/`.
 - Docker-only shell execution
 - File, output, time, and step caps
 
-## Not supported
-
-- Browser automation
-- Package installation during runtime
-- Internet access from the sandbox
-- Background daemons
-- Multi-tenant production auth
