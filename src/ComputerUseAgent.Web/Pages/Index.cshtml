@@ -1,10 +1,35 @@
-﻿@page
-@model IndexModel
+@page
+@model ComputerUseAgent.Web.Pages.IndexModel
 @{
-    ViewData["Title"] = "Home page";
+    ViewData["Title"] = "Computer Use Agent";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+<section class="hero">
+    <h1>Computer Use Agent Demo</h1>
+    <p>Submit a plain-language task and inspect the full tool timeline, command output, and generated artifacts.</p>
+</section>
+
+<section class="panel">
+    <form method="post">
+        <label asp-for="Prompt"></label>
+        <textarea asp-for="Prompt" id="prompt" rows="9"></textarea>
+        <span asp-validation-for="Prompt" class="text-danger"></span>
+        @if (!string.IsNullOrWhiteSpace(Model.ErrorMessage))
+        {
+            <div class="error-box">@Model.ErrorMessage</div>
+        }
+        <div class="actions">
+            <button type="submit">Run Task</button>
+        </div>
+    </form>
+</section>
+
+<section class="panel">
+    <h2>Example Prompts</h2>
+    <div class="example-list">
+        @foreach (var example in Model.Examples)
+        {
+            <button type="button" class="example-button" onclick="document.getElementById('prompt').value=@Html.Raw(System.Text.Json.JsonSerializer.Serialize(example));">@example</button>
+        }
+    </div>
+</section>

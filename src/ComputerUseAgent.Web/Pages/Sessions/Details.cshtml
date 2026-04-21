@@ -1,0 +1,56 @@
+@page "/sessions/{id}"
+@model ComputerUseAgent.Web.Pages.Sessions.DetailsModel
+@{
+    ViewData["Title"] = $"Session {Model.Id}";
+}
+
+<section class="hero">
+    <h1>Session @Model.Id</h1>
+    <p>Status: <strong>@Model.Summary?.Status</strong></p>
+</section>
+
+@if (!string.IsNullOrWhiteSpace(Model.ErrorMessage))
+{
+    <div class="error-box">@Model.ErrorMessage</div>
+}
+else if (Model.Summary is not null)
+{
+    <section class="panel">
+        <h2>Prompt</h2>
+        <pre>@Model.Summary.Prompt</pre>
+        <h2>Final Answer</h2>
+        <pre>@Model.Summary.FinalAnswer</pre>
+    </section>
+
+    <section class="panel">
+        <h2>Files</h2>
+        @foreach (var file in Model.Files)
+        {
+            <article class="file-card">
+                <header>
+                    <strong>@file.Path</strong>
+                    <span>@file.SizeBytes bytes</span>
+                    <a href="@Model.GetFileUrl(file.Path, true)">Download</a>
+                </header>
+                @if (Model.Previews.TryGetValue(file.Path, out var preview))
+                {
+                    <pre>@preview</pre>
+                }
+            </article>
+        }
+    </section>
+
+    <section class="panel">
+        <h2>Timeline</h2>
+        @foreach (var sessionEvent in Model.Events)
+        {
+            <article class="event-card">
+                <header>
+                    <strong>@sessionEvent.EventType</strong>
+                    <span>@sessionEvent.TimestampUtc.ToString("u")</span>
+                </header>
+                <pre>@sessionEvent.PayloadJson</pre>
+            </article>
+        }
+    </section>
+}
