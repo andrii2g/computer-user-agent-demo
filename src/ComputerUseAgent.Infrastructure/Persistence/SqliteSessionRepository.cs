@@ -207,7 +207,8 @@ public sealed class SqliteSessionRepository : ISessionRepository
     public async Task UpsertFilesAsync(string sessionId, IReadOnlyList<WorkspaceFileRecord> files, CancellationToken cancellationToken)
     {
         await using var connection = await OpenConnectionAsync(cancellationToken);
-        await using var transaction = await connection.BeginTransactionAsync(cancellationToken);
+        await using var dbTransaction = await connection.BeginTransactionAsync(cancellationToken);
+        var transaction = (SqliteTransaction)dbTransaction;
 
         var deleteCommand = connection.CreateCommand();
         deleteCommand.Transaction = transaction;

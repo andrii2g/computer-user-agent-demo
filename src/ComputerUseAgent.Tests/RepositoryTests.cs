@@ -38,7 +38,7 @@ public sealed class RepositoryTests : IDisposable
     {
         return new SqliteSessionRepository(Options.Create(new DatabaseOptions
         {
-            ConnectionString = $"Data Source={_dbPath}"
+            ConnectionString = $"Data Source={_dbPath};Mode=ReadWriteCreate;Pooling=False"
         }));
     }
 

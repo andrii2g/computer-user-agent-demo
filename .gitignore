@@ -11,3 +11,6 @@
 /src/ComputerUseAgent.Web/obj
 /src/ComputerUseAgent.Core/bin/Debug/net10.0
 /src/ComputerUseAgent.Web/bin/Debug/net10.0
+/src/ComputerUseAgent.Api/bin/Debug/net10.0
+/src/ComputerUseAgent.Infrastructure/bin/Debug/net10.0
+/src/ComputerUseAgent.Tests/bin/Debug/net10.0
