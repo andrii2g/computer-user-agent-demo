@@ -291,11 +291,27 @@ public sealed class AgentRunOrchestrator
             _ => $"{session.ContainerWorkspacePath.TrimEnd('/')}/{request.WorkingDirectory.TrimStart('/').Replace('\\', '/')}"
         };
 
+        var commandOptions = new SandboxOptions
+        {
+            Image = _sandboxOptions.Image,
+            WorkspaceRoot = _sandboxOptions.WorkspaceRoot,
+            CommandTimeoutSeconds = request.TimeoutSeconds,
+            MaxShellCommands = _sandboxOptions.MaxShellCommands,
+            MaxToolCalls = _sandboxOptions.MaxToolCalls,
+            MaxWorkspaceBytes = _sandboxOptions.MaxWorkspaceBytes,
+            MaxFileWriteBytes = _sandboxOptions.MaxFileWriteBytes,
+            MaxReadContentBytes = _sandboxOptions.MaxReadContentBytes,
+            MaxReadAbsoluteBytes = _sandboxOptions.MaxReadAbsoluteBytes,
+            MaxStdoutBytes = _sandboxOptions.MaxStdoutBytes,
+            MaxStderrBytes = _sandboxOptions.MaxStderrBytes,
+            MaxRunDurationSeconds = _sandboxOptions.MaxRunDurationSeconds
+        };
+
         var result = await _sandboxService.ExecuteCommandAsync(
             session.SandboxContainerId!,
             containerWorkingDirectory,
             request.Command,
-            _sandboxOptions with { CommandTimeoutSeconds = request.TimeoutSeconds },
+            commandOptions,
             cancellationToken);
 
         var response = new RunShellCommandResponse(
