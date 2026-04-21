@@ -18,4 +18,9 @@
     <Using Include="Xunit" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\ComputerUseAgent.Core\ComputerUseAgent.Core.csproj" />
+    <ProjectReference Include="..\ComputerUseAgent.Infrastructure\ComputerUseAgent.Infrastructure.csproj" />
+  </ItemGroup>
+
 </Project>
