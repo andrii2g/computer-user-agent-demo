@@ -1,0 +1,4 @@
+Create a Python script named hello.py that prints "Hello from the sandbox".
+Run it.
+Save the output to result.txt.
+Then finish with a short summary.

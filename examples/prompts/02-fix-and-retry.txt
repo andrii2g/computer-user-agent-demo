@@ -1,0 +1,7 @@
+Create a Python script named calc.py with a deliberate syntax error.
+Run it.
+Inspect the error.
+Fix the script so it prints the sum of 2 and 3.
+Run it again.
+Save the final output to result.txt.
+Then finish.

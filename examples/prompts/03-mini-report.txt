@@ -1,0 +1,4 @@
+Create a CSV file named sales.csv with a few rows of sample sales data.
+Write a Python script named summarize.py that reads the CSV and writes a markdown report named report.md with total sales and row count.
+Run the script.
+Then finish.
